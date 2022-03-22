@@ -7,4 +7,5 @@ class Users extends Model
     public $id;
     public $name;
     public $email;
+    public $password;
 }

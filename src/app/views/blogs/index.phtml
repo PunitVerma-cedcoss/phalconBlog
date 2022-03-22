@@ -1,0 +1,40 @@
+<?php
+foreach ($data as $d) {
+    // echo "<pre>";
+    // print_r($d->blogs->blog_image);
+    // echo "</pre>";
+?>
+    <div class="blogs">
+        <div class="blog">
+            <div class="blog-image h-64 w-screen">
+                <img src="<?php echo $d->blogs->blog_image; ?>" alt="" class="h-full w-full">
+            </div>
+            <div class="blog-details p-3">
+                <div class="blog-uploader">
+                    <p>some name</p>
+                    <p><?php echo $d->blogs->blog_date; ?></p>
+                    <?php
+                    if (1 == 1) {
+                    ?>
+                        <a href="/edit/<?php echo $d->blogs->id; ?>">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="/delete/<?php echo $d->blogs->id; ?>">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    <?php
+                    }
+                    ?>
+                </div>
+                <div class="blog-title">
+                    <p class="text-2xl"><?php echo $d->blogs->blog_title; ?></p>
+                </div>
+                <div class="blog-content">
+                    <p class="text-lg"><?php echo $d->blogs->blog_content; ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php
+}
+?>

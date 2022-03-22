@@ -53,29 +53,30 @@ $application = new Application($container);
 
 
 
-// $container->set(
-//     'db',
-//     function () {
-//         return new Mysql(
-//             [
-//                 'host'     => 'localhost',
-//                 'username' => 'root',
-//                 'password' => '',
-//                 'dbname'   => 'phalt',
-//                 ]
-//             );
-//         }
-// );
-
 $container->set(
-    'mongo',
+    'db',
     function () {
-        $mongo = new MongoClient();
-
-        return $mongo->selectDB('phalt');
-    },
-    true
+        return new Mysql(
+            [
+                'host'     => 'mysql-server',
+                'username' => 'root',
+                'password' => 'secret',
+                'dbname'   => 'blog',
+            ]
+        );
+    }
 );
+
+
+// $container->set(
+//     'mongo',
+//     function () {
+//         $mongo = new MongoClient();
+
+//         return $mongo->selectDB('phalt');
+//     },
+//     true
+// );
 
 try {
     // Handle the request
