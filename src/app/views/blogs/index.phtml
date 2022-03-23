@@ -1,40 +1,114 @@
 <?php
-foreach ($data as $d) {
-    // echo "<pre>";
-    // print_r($d->blogs->blog_image);
-    // echo "</pre>";
+
+use Phalcon\Session\Manager;
+use Phalcon\Session\Adapter\Stream;
+
+$session = new Manager();
+$files = new Stream(
+    [
+        'savePath' => '/tmp',
+    ]
+);
+$session->setAdapter($files)->start();
+// print_r($session->get("user"));
 ?>
-    <div class="blogs">
-        <div class="blog">
-            <div class="blog-image h-64 w-screen">
+<!-- including navbar 🛬 -->
+<nav class="p-3 shadow-lg fixed w-full bg-gradient-to-r from-pink-500 to-red-600 text-white">
+    <div class="flex justify-between flex-col sm:flex-row items-">
+        <ul class="navbar  list-none flex justify-center items- flex-col sm:flex-row flex-col sm:flex-row ">
+            <a href="/blogs" class="font-bold">
+                <li class="mx-2"><i class="fa fa-home mr-2"></i> Home</li>
+            </a>
+            <a href="/blogs/myblogs">
+                <li class="mx-2"><i class="fa fa-box mr-2"></i> my Blogs</li>
+            </a>
+            <a href="/blogs/create">
+                <li class="mx-2"><i class="fa fa-edit mr-2"></i> make a Blog</li>
+            </a>
+        </ul>
+        <ul class="navbar  list-none flex justify-end items-center">
+            <?php
+            if ($session->get('user')) {
+            ?>
+                <!-- if user is logged in  -->
+                <a href="/auth/logout">
+                    <li class="mx-2"><i class="fa fa-lock mr-2"></i> Logout</li>
+                </a>
+            <?php
+            } else {
+            ?>
+                <!-- if user is not logged in  -->
+                <a href="/auth/">
+                    <li class="mx-2"><i class="fa fa-lock mr-2"></i> Login</li>
+                </a>
+            <?php
+            }
+            ?>
+        </ul>
+        <div class="flex items-center justify-between sm:hidden">
+            <i class="toggleNav fa fa-align-center cursor-pointer block"></i>
+            <p class="text-white font-bold">Blogs</p>
+        </div>
+    </div>
+</nav>
+<div class="blogs grid grid-cols-12 pt-3">
+    <?php
+    foreach ($data as $d) {
+    ?>
+
+        <div class="blog col-span-12 sm:col-span-4">
+            <div class="blog-image h-64 hover:shadow-lg">
                 <img src="<?php echo $d->blogs->blog_image; ?>" alt="" class="h-full w-full">
             </div>
             <div class="blog-details p-3">
-                <div class="blog-uploader">
-                    <p>some name</p>
-                    <p><?php echo $d->blogs->blog_date; ?></p>
+                <div class="blog-uploader flex justify-between items-center">
+                    <div class="text-sm">
+                        <p><?php echo $d->blogs->user_email; ?></p>
+                        <p><?php echo $d->blogs->blog_date; ?></p>
+                    </div>
                     <?php
-                    if (1 == 1) {
+                    if ($session->get("user") == $d->blogs->user_email) {
                     ?>
-                        <a href="/edit/<?php echo $d->blogs->id; ?>">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a href="/delete/<?php echo $d->blogs->id; ?>">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <div>
+                            <a href="/edit/<?php echo $d->blogs->id; ?>">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="/delete/<?php echo $d->blogs->id; ?>">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
                     <?php
                     }
                     ?>
                 </div>
                 <div class="blog-title">
-                    <p class="text-2xl"><?php echo $d->blogs->blog_title; ?></p>
+                    <a href="/blogs/blog/<?php echo $d->blogs->id; ?>">
+                        <p class="text-xl text-pink-500"><?php echo $d->blogs->blog_title; ?></p>
+                    </a>
                 </div>
                 <div class="blog-content">
-                    <p class="text-lg"><?php echo $d->blogs->blog_content; ?></p>
+                    <p class="text-lg italic text-sm text-stone-700"><?php echo substr($d->blogs->blog_content, 0, 250) . "...."; ?></p>
+                </div>
+                <div class="blog-tags">
+                    <?php foreach (explode(",", $d->blogs->blog_tags) as $blogs) {
+                    ?>
+                        <a href="#" class="text-sm text-stone-600 px-2 py-1 bg-pink-100 m-1 rounded-lg">
+                            <?php echo $blogs; ?>
+                        </a>
+                    <?php
+                    } ?>
                 </div>
             </div>
         </div>
-    </div>
-<?php
-}
-?>
+    <?php
+    }
+    ?>
+</div>
+
+
+<script>
+    $(".toggleNav").click(function(e) {
+        e.preventDefault();
+        $(".navbar").toggleClass('hidden');
+    });
+</script>

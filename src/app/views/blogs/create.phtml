@@ -10,17 +10,19 @@ $files = new Stream(
     ]
 );
 $session->setAdapter($files)->start();
+// print_r($session->get("user"));
 ?>
+<!-- including navbar 🛬 -->
 <nav class="p-3 shadow-lg fixed w-full bg-gradient-to-r from-pink-500 to-red-600 text-white">
     <div class="flex justify-between flex-col sm:flex-row items-">
         <ul class="navbar  list-none flex justify-center items- flex-col sm:flex-row flex-col sm:flex-row ">
-            <a href="/blogs" class="">
+            <a href="/blogs">
                 <li class="mx-2"><i class="fa fa-home mr-2"></i> Home</li>
             </a>
-            <a href="#">
+            <a href="/blogs/myblogs">
                 <li class="mx-2"><i class="fa fa-box mr-2"></i> my Blogs</li>
             </a>
-            <a href="/blogs/create">
+            <a href="#" class="font-bold">
                 <li class="mx-2"><i class="fa fa-edit mr-2"></i> make a Blog</li>
             </a>
         </ul>
@@ -29,7 +31,7 @@ $session->setAdapter($files)->start();
             if ($session->get('user')) {
             ?>
                 <!-- if user is logged in  -->
-                <a href="#">
+                <a href="/auth/logout">
                     <li class="mx-2"><i class="fa fa-lock mr-2"></i> Logout</li>
                 </a>
             <?php
@@ -50,27 +52,26 @@ $session->setAdapter($files)->start();
     </div>
 </nav>
 <div class="h-screen w-screen flex justify-center items-center">
-    <form action="#" method="post" class="p-3 w-2/3">
-        <a href="delete/<?php echo $data->id; ?>"><i class="fa fa-trash bg-gradient-to-tl from-pink-500 to-yellow-600 via-red-600 bg-clip-text text-transparent"></i></a>
+    <form action="/blogs/create" method="post" class="p-3 w-2/3 mt-5">
         <label for="image" class="mt-2">
             <p><i class="fa fa-image bg-gradient-to-tl from-pink-500 to-yellow-600 via-red-600 bg-clip-text text-transparent"></i> image</p>
-            <input type="text" value="<?php echo $data->blog_image; ?>" name="image" id="image" placeholder="image" class="w-full border-2 border-stone-700 rounded-sm mt-2" required>
+            <input type="text" name="image" id="image" placeholder="image" class="w-full border-2 border-stone-700 rounded-sm mt-2" required>
         </label>
         <label for="title" class="mt-2">
             <p><i class="fa fa-font bg-gradient-to-tl from-pink-500 to-yellow-600 via-red-600 bg-clip-text text-transparent"></i> title</p>
-            <input type="text" value="<?php echo $data->blog_title; ?>" name="title" id="title" placeholder="title" class="w-full border-2 border-stone-700 rounded-sm mt-2" required>
+            <input type="text" name="title" id="title" placeholder="title" class="w-full border-2 border-stone-700 rounded-sm mt-2" required>
         </label>
         <label for="tags" class="mt-2">
             <p><i class="fa fa-font bg-gradient-to-tl from-pink-500 to-yellow-600 via-red-600 bg-clip-text text-transparent"></i> tags</p>
-            <input type="text" value="<?php echo $data->blog_tags; ?>" name="tags" id="tags" placeholder="tags" class="w-full border-2 border-stone-700 rounded-sm mt-2" required>
+            <input type="text" name="tags" id="tags" placeholder="tags" class="w-full border-2 border-stone-700 rounded-sm mt-2" required>
         </label>
         <label for="content" class="mt-2">
             <p><i class="fa fa-font bg-gradient-to-tl from-pink-500 to-yellow-600 via-red-600 bg-clip-text text-transparent"></i> content</p>
-            <textarea rows="10" name="content" id="content" placeholder="content" class="border-2 border-stone-700 rounded-sm mt-2 w-full" required><?php echo $data->blog_content; ?>
+            <textarea rows="10" name="content" id="content" placeholder="content" class="border-2 border-stone-700 rounded-sm mt-2 w-full" required>
         </textarea>
         </label>
         <label for="submit" class="w-full my-4">
-            <input type="submit" value="Update" name="submit" id="name" class="w-full p-2 rounded-sm shadow-md cursor-pointer text-white bg-gradient-to-r from-pink-500 to-red-600 ">
+            <input type="submit" value="Create" name="submit" id="name" class="w-full p-2 rounded-sm shadow-md cursor-pointer text-white bg-gradient-to-r from-pink-500 to-red-600 ">
         </label>
     </form>
 </div>

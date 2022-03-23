@@ -4,7 +4,7 @@ use Phalcon\Mvc\Controller;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
 
-class EditController extends Controller
+class DeleteController extends Controller
 {
 
     public function IndexAction()
@@ -32,39 +32,18 @@ class EditController extends Controller
                         'id' => $id[2],
                     ]
                 ]);
-                if ($data) {
+                $res = $data->delete();
+                if ($res) {
                     if ($session->get("user") != $data->user_email) {
                         header("location:/blogs");
                     }
                     $this->view->data = $data;
                 } else {
-                    $this->view->data = "no data found";
                     header("location:/blogs");
                 }
             }
         }
-        // update the blog ⏫
-        if ($this->request->ispost()) {
-            $blogs = new Blogs();
-            $x = $blog::findFirst([
-                'conditions' => 'id = :id:',
-                'bind' => [
-                    'id' => $id[2],
-                ]
-            ]);
-            $x->blog_image = $this->request->getpost()["image"];
-            $x->blog_title = $this->request->getpost()["title"];
-            $x->blog_content = $this->request->getpost()["content"];
-            $x->blog_tags = $this->request->getpost()["tags"];
-            if ($x->save()) {
-                echo "data updated";
-                header("location:/blogs/" . $id[2]);
-            } else {
-                echo "some errorr occured";
-            }
-            die();
-        }
-
+        header("location:/blogs");
         // if ($this->request->isget()) {
         //     $this->view->data = $this->request->getQuery();
         // }

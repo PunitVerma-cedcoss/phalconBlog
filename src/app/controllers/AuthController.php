@@ -29,7 +29,7 @@ class AuthController extends Controller
             );
             if ($d) {
                 $session->set('user', $d->email);
-                header("location:home");
+                header("location:/blogs");
             } else {
                 $this->view->message =  "invalid username or password";
             }
@@ -66,5 +66,19 @@ class AuthController extends Controller
             }
         }
         // die();
+    }
+    public function logoutAction()
+    {
+        $session = new Manager();
+        $files = new Stream(
+            [
+                'savePath' => '/tmp',
+            ]
+        );
+        $session->setAdapter($files)->start();
+        $session->remove('user');
+        unset($session->userId);
+        $session->destroy();
+        header("location:/auth");
     }
 }
